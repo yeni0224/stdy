@@ -35,7 +35,7 @@ void ABullet::BeginPlay()
 
 
 	FTimerHandle bulletTimer;
-	GetWorld()->GetTimerManager().SetTimer(bulletTimer, this, &ABullet::DistroyMySelf, 2.f);
+	GetWorld()->GetTimerManager().SetTimer(bulletTimer, this, &ABullet::DestroyMySelf, 2.f);
 }
 
 // Called every frame
@@ -45,7 +45,7 @@ void ABullet::Tick(float DeltaTime)
 
 }
 
-void ABullet::DistroyMySelf()
+void ABullet::DestroyMySelf()
 {
 	Destroy();
 }

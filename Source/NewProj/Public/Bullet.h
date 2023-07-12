@@ -30,5 +30,5 @@ public:
 	UPROPERTY(EditAnywhere, Category= "Bullet Settings")
 	class UProjectileMovementComponent* moveComp;
 
-	void DistroyMySelf();
+	void DestroyMySelf();
 };
