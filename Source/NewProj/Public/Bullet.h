@@ -31,4 +31,6 @@ public:
 	class UProjectileMovementComponent* moveComp;
 
 	void DestroyMySelf();
+
+	int32 attkScore = 5;
 };

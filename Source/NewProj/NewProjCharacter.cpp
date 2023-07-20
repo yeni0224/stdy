@@ -11,6 +11,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Kismet/GameplayStatics.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -165,6 +166,31 @@ void ANewProjCharacter::Fire()
 {
 	auto fireLoc = GetActorLocation() + GetActorForwardVector() * 1;
 	GetWorld()->SpawnActor<ABullet>(bulletFactory, fireLoc, GetActorRotation());
-	UE_LOG(LogTemp, Warning, TEXT("Fire Bullet"))
+	//UE_LOG(LogTemp, Warning, TEXT("Fire Bullet"))
+
+	FHitResult hitInfo;
+	FVector startP = FollowCamera->GetComponentLocation();
+	FVector endP = startP + FollowCamera->GetForwardVector() * 100000;
+	FCollisionQueryParams params;
+	params.AddIgnoredActor(this);
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(hitInfo, startP, endP, ECollisionChannel::ECC_Visibility, params);
+
+	if(bHit)
+	{
+		FTransform trans(hitInfo.ImpactPoint);
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), fireEffect, trans);
+	}
+
+	auto hitComp = hitInfo.GetComponent();
+	if(hitComp && hitComp->IsSimulatingPhysics()) //물체가 물리작용한다면
+	{
+		//힘이 작용하는 방향
+		FVector forDir = (hitInfo.TraceEnd - hitInfo.TraceStart).GetSafeNormal();
+		//작용하는 힘의 크기
+		FVector force = forDir * 100000 * hitComp->GetMass();
+		hitComp->AddForce(force);
+	}
+
 }
 

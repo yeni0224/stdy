@@ -48,6 +48,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Bullet Settings")
 	TSubclassOf<class ABullet> bulletFactory;
 
+	UPROPERTY(EditDefaultsOnly)
+	class UParticleSystem* fireEffect;
+
 
 protected:
 
